@@ -1,7 +1,16 @@
 import inquirer
+import os
+from time import sleep
+
+def screen_clear():
+   # for mac and linux(here, os.name is 'posix')
+   if os.name == 'posix':
+      _ = os.system('clear')
+   else:
+      # for windows platfrom
+      _ = os.system('cls')
 
 granted = False
-
 #application launch
 def begin():
     global option
@@ -53,8 +62,8 @@ def login(username,password):
         print("\t\t\tLogin Successfully")
         appaccess()
     else:
+        screen_clear()
         print("Invalid Username or Password!")
-        begin()
         
 def register(name,password):
     file = open("credentials.txt","a")
@@ -70,6 +79,7 @@ def main():
         access(option)
 
         if(granted):
+            screen_clear()
             break
 
     print(f"Welcome {name} !")
