@@ -70,6 +70,12 @@ def register(name,password):
     file.write("\n"+name+","+password)
     print("\t\t\tUser registered successfully!")
 
+def dashboard(sql_object):
+    sql = sql_object
+    if sql:
+        balance_sql = "Enter sql statement here"
+    else:
+        print("An error has occured")
 
 #main application function
 def main():
