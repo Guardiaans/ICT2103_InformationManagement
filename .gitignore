@@ -56,3 +56,7 @@ bin/Local/Lib/site-packages/wcwidth/__pycache__/table_wide.cpython-38.pyc
 bin/Local/Lib/site-packages/wcwidth/__pycache__/table_zero.cpython-38.pyc
 bin/Local/Lib/site-packages/wcwidth/__pycache__/unicode_versions.cpython-38.pyc
 bin/Local/Lib/site-packages/wcwidth/__pycache__/wcwidth.cpython-38.pyc
+bin/__pycache__/managebudget.cpython-38.pyc
+bin/__pycache__/mainmenu.cpython-38.pyc
+.idea/inspectionProfiles/Project_Default.xml
+bin/__pycache__/main.cpython-38.pyc
