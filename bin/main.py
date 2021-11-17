@@ -4,6 +4,17 @@ from time import sleep
 # import sys
 # sys.path.insert(1, 'C:/Users/angyi/Documents/GitHub/ICT2103_InformationManagement/bin')
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 def screen_clear():
    # for mac and linux(here, os.name is 'posix')
    if os.name == 'posix':
@@ -119,7 +130,7 @@ def login(username,password):
         appaccess()
     else:
         screen_clear()
-        print("Invalid Username or Password!")
+        print(f"\n\n\t\t\t\t{bcolors.FAIL}Invalid Username or Password!{bcolors.ENDC}")
         
 def register(name,password):
     file = open("credentials.txt","a")
