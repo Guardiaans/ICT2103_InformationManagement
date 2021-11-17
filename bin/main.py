@@ -1,6 +1,7 @@
 import components.launch as launch
 import components.main_menu as mm
 import components.utils as ut
+import components.dbconnection as db
 import time as t
 
 opened = True
@@ -24,25 +25,32 @@ def authenticate():
 if __name__ == '__main__':
     authenticated_status = False
 
-    while(opened):
-        if authenticated_status == False:
-            authenticated_status = authenticate()
-            print(authenticated_status)
-            if authenticated_status == 'exit':
-                break
-        else:
-            #print("Im here")
-            opened = mm.mainMenu()
-
-            if opened == False:
-                print("No need to refresh")
+    try:
+        while(opened):
+            if authenticated_status == False:
+                authenticated_status = authenticate()
+                print(authenticated_status)
+                if authenticated_status == 'exit':
+                    break
             else:
-                t.sleep(3)
-                print("In main loop")
-                print('refreshing')
-                t.sleep(3)
+                #print("Im here")
+                opened = mm.mainMenu()
 
-    print("Program Exited")
+                if opened == False:
+                    print("No need to refresh")
+                else:
+                    t.sleep(3)
+                    print("In main loop")
+                    print('refreshing')
+                    t.sleep(3)
+
+            print("Program Exited")
+
+    except:
+        print("Unexpected Error! ")
+    
+
+    
             
 
 

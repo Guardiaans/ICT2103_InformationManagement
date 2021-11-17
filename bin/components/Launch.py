@@ -40,7 +40,11 @@ def login(username,password):
     #login session
     success = False
     #open file to read data
-    file = open("../bin/credentials.txt","r")
+    try:
+        file = open("../bin/credentials.txt","r")
+    except:
+        print("File cannot be opened!")
+        
     for data in file:
          usr,pw = data.split(",")
          #strip to remove quotation from password
