@@ -14,7 +14,7 @@ def begin():
     #only given two choice
     #inquirer import function
     option = inquirer.list_input("Login or Register?",
-                              choices=['Login', 'Register'])
+                              choices=['Login', 'Register', 'Exit',])
 
 def access(option):
     global name

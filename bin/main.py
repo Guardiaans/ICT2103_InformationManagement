@@ -1,21 +1,31 @@
-import components.Launch as launch
-#import components.utils as ut
+import components.launch as launch
+import components.main_menu as mm
+import components.utils as ut
+import time as t
 
+opened = True
 #main application function
-def main():
+def authenticate():
 
-    while(1):
-        launch.begin()
-        launch.access(launch.option)
+    launch.begin()
+    launch.access(launch.option)
 
-        if(launch.granted):
-            ut.screen_clear()
-            break
+    if(launch.granted):
+        authenticated = True
+        print(f"Welcome {launch.name} !") 
+        t.sleep(1)
+        return 
 
-    print(f"Welcome {launch.name} !")
-    print("### Application functions to be constructed ###")
 
 if __name__ == '__main__':
-    main()
+    authenticated = False
+    print(authenticated)
+    while(opened):
+        if authenticated == False:
+            authenticated = authenticate()
+            print(authenticated)
+        else:
+            print("Im here") 
+            #mm.mainMenu()
 
 
