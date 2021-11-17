@@ -8,24 +8,41 @@ opened = True
 def authenticate():
 
     launch.begin()
-    launch.access(launch.option)
 
-    if(launch.granted):
-        authenticated = True
-        print(f"Welcome {launch.name} !") 
-        t.sleep(1)
-        return 
+    if launch.option == 'Exit':
+        return 'exit'
 
+    else:
+        launch.access(launch.option)
+        if(launch.granted):
+            print(f"Welcome {launch.name} !") 
+            t.sleep(1)
+            return True
+
+    return False
 
 if __name__ == '__main__':
-    authenticated = False
-    print(authenticated)
+    authenticated_status = False
+
     while(opened):
-        if authenticated == False:
-            authenticated = authenticate()
-            print(authenticated)
+        if authenticated_status == False:
+            authenticated_status = authenticate()
+            print(authenticated_status)
+            if authenticated_status == 'exit':
+                break
         else:
-            print("Im here") 
-            #mm.mainMenu()
+            #print("Im here")
+            opened = mm.mainMenu()
+
+            if opened == False:
+                print("No need to refresh")
+            else:
+                t.sleep(3)
+                print("In main loop")
+                print('refreshing')
+                t.sleep(3)
+
+    print("Program Exited")
+            
 
 

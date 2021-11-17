@@ -9,8 +9,6 @@ from components.main_menu_components.view_budget import viewBudget
 from components.main_menu_components.view_prediction import viewPrediction
 from components.main_menu_components.view_transaction_summary import viewTransactionSummary
 
-menu = True
-
 def mainMenu():
     ut.screen_clear()
     #Menu options for user
@@ -42,8 +40,8 @@ def mainMenu():
     else:
         #exit or logout option implementation
         print("See you again!")
-        menu = False
-        return menu
+        
+        return False
 
     t.sleep(1)
 
