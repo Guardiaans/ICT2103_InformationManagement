@@ -1,4 +1,4 @@
-import components.launch as launch
+import components.authenticate as auth
 import components.main_menu as mm
 import components.utils as ut
 import components.dbconnection as db
@@ -8,15 +8,15 @@ opened = True
 #main application function
 def authenticate():
 
-    launch.begin()
+    auth.begin()
 
-    if launch.option == 'Exit':
+    if auth.option == 'Exit':
         return 'exit'
 
     else:
-        launch.access(launch.option)
-        if(launch.granted):
-            print(f"Welcome {launch.name} !") 
+        auth.access(auth.option)
+        if(auth.granted):
+            print(f"Welcome {auth.name} !") 
             t.sleep(1)
             return True
 

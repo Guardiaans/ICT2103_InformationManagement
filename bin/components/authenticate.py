@@ -19,16 +19,16 @@ def begin():
 def access(option):
     global name
     if(option=="Login"):
-        name = input("Enter your name: ")
+        username = input("Enter your username: ")
         password = input("Enter your password: ")
         #function to check login credentials
-        login(name,password)
+        login(username,password)
     else:
         print("Enter your name and password to register")
         #TODO: Needs validation here
-        name = input("Enter your name: ")
+        username = input("Enter your name: ")
         password = input("Enter your password: ")
-        register(name,password)
+        register(username,password)
 
 #function to determine application access
 def appaccess():
