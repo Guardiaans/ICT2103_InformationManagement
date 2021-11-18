@@ -1,4 +1,4 @@
-import inquirer
+import inquirer as iq
 import components.utils as ut
 
 granted = False
@@ -8,12 +8,12 @@ def begin():
     print("""
             _________________________________________________________________________
             |                                                                       |
-            |   Welcome to OKFINANCE Management! Please read me before proceeding   |
+            |                  Welcome to OKFINANCE Management!                     |
             |_______________________________________________________________________|
     """)
     #only given two choice
     #inquirer import function
-    option = inquirer.list_input("Login or Register?",
+    option = iq.list_input("Login or Register?",
                               choices=['Login', 'Register', 'Exit',])
 
 def access(option):
