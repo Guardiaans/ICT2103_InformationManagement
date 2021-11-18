@@ -4,6 +4,7 @@
 
 # GuanCong files
 venv
+.vscode
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
