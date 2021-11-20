@@ -1,10 +1,12 @@
 import inquirer as iq
 import components.utils as ut
+from components.utils import User
+from components.dbconnection import session, user
+from sqlalchemy import exists
+from datetime import date
 
-granted = False
-#application launch
-def begin():
-    global option
+#launch authentication UI
+def launchAuthenUI():
     print("""
             _________________________________________________________________________
             |                                                                       |
@@ -16,51 +18,66 @@ def begin():
     option = iq.list_input("Login or Register?",
                               choices=['Login', 'Register', 'Exit',])
 
-def access(option):
-    global name
-    if(option=="Login"):
-        username = input("Enter your username: ")
-        password = input("Enter your password: ")
-        #function to check login credentials
-        login(username,password)
-    else:
-        print("Enter your name and password to register")
-        #TODO: Needs validation here
-        username = input("Enter your name: ")
-        password = input("Enter your password: ")
-        register(username,password)
+    return option
 
-#function to determine application access
-def appaccess():
-    global granted
-    granted = True
+def verifyCredentials(email, password):
 
-#login functon
-def login(username,password):
-    #login session
-    success = False
-    #open file to read data
     try:
-        file = open("../bin/credentials.txt","r")
+        #### RDMS query ####
+        email = session.query(exists(user.c.email).where(user.c.email == email)).scalar()
+        pw = session.query(exists(user.c.password).where(user.c.password == password)).scalar()
+
+        if email == True and pw == True:
+            
+            print("\t\t\tLogin Successfully")
+            
+            return True
+
+        else:
+            #ut.screen_clear()
+            print(f"\n\n\t\t\t\t{ut.bcolors.FAIL}Invalid Username or Password!{ut.bcolors.ENDC}")
+            return False
     except:
-        print("File cannot be opened!")
-        
-    for data in file:
-         usr,pw = data.split(",")
-         #strip to remove quotation from password
-         pw = pw.strip()
-         if(usr==username and pw==password):
-             success = True
-             break
-    file.close()
-    if(success):
-        print("\t\t\tLogin Successfully")
-        appaccess()
-    else:
-        ut.screen_clear()
-        print(f"\n\n\t\t\t\t{ut.bcolors.FAIL}Invalid Username or Password!{ut.bcolors.ENDC}")
-        
-def register(name,password):
-    file = open("credentials.txt","a")
-    file.write("\n"+name+","+password)
-    print("\t\t\tUser registered successfully!")
+        print("Unable to authenticate!")
+
+    return False
+
+def register(usrname, pw, bk, usremail):
+
+    try:
+        #### RDMS QUERY ####
+        # check if user name or email exist in database
+        email = session.query(exists(user.c.email).where(
+            user.c.email == usremail)).scalar()
+        #print(f"is there an existing email?: {email}")
+
+        name = session.query(exists(user.c.name).where(
+            user.c.name == usrname)).scalar()
+        #print(f"is there an existing name?: {name}")
+
+        # registering logic
+        if email or name == True:
+            if email == True:
+                print("Existing email in use!")
+            else:
+                print("User name have been taken")
+        else:
+            today = date.today()
+
+            #### RDMS QUERY ####
+            newUser = User(date_registered=today, name=usrname,
+                           bank_name=bk, password=pw, email=usremail)
+            session.add(newUser)
+            session.commit()
+
+            print('Successfully registered! Returning to main menu!\n')
+
+    except:
+        print("Error occurred while registering, please try again!\n")
+
+
+
+
+
+#authenticate()
+#print(emailadd)
