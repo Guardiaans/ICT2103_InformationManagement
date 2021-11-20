@@ -14,7 +14,7 @@ def begin():
     #only given two choice
     #inquirer import function
     option = inquirer.list_input("Login or Register?",
-                              choices=['Login', 'Register'])
+                              choices=['Login', 'Register', 'Exit',])
 
 def access(option):
     global name
@@ -40,7 +40,11 @@ def login(username,password):
     #login session
     success = False
     #open file to read data
-    file = open("credentials.txt","r")
+    try:
+        file = open("../bin/credentials.txt","r")
+    except:
+        print("File cannot be opened!")
+        
     for data in file:
          usr,pw = data.split(",")
          #strip to remove quotation from password
