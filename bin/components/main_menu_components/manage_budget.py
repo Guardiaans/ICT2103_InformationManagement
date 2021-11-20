@@ -1,5 +1,6 @@
 import inquirer as iq
 import components.utils as ut
+
 def manageBudget():
     #TODO: 
     # Creating of sub menu for managing of budget
