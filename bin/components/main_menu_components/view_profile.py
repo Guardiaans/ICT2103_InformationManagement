@@ -10,12 +10,12 @@ def viewProfile(emailadd):
     print(f'''
     Hello {user_profile.name} here are your details!
 
-    ACCOUNT ID :      {user_profile.id}
+    ACCOUNT ID      : {user_profile.id}
     DATE REGISTERED : {user_profile.registered}
-    NAME :            {user_profile.name}
-    BANK NAME :       {user_profile.bank}
+    NAME            : {user_profile.name}
+    BANK NAME       : {user_profile.bank}
     ACCOUNT BALANCE : {user_profile.balance}
-    EMAIL :           {user_profile.email}
+    EMAIL           : {user_profile.email}
 
     ''')
 
