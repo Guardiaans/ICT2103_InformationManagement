@@ -1,12 +1,14 @@
 import inquirer as iq
 import components.utils as ut
-from components.utils import User
+from components.utils import User, screen_clear
 from components.dbconnection import session, user
 from sqlalchemy import exists
 from datetime import date
 
+
 #launch authentication UI
 def launchAuthenUI():
+    screen_clear()
     print("""
             _________________________________________________________________________
             |                                                                       |
@@ -29,13 +31,13 @@ def verifyCredentials(email, password):
 
         if email == True and pw == True:
             
-            print("\t\t\tLogin Successfully")
+            print(f"\n\t\t\t\t{'||' : <10}{ut.bcolors.OKGREEN}{'Logged In Successfully' : ^10}{ut.bcolors.ENDC}{'||' : >10}")
             
             return True
 
         else:
             #ut.screen_clear()
-            print(f"\n\n\t\t\t\t{ut.bcolors.FAIL}Invalid Username or Password!{ut.bcolors.ENDC}")
+            print(f"\n\t\t\t\t{'||' : <10}{ut.bcolors.FAIL}Invalid Username or Password!{ut.bcolors.ENDC}{'||' : >10}")
             return False
     except:
         print("Unable to authenticate!")

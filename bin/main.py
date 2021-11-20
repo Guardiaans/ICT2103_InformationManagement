@@ -2,6 +2,7 @@ import components.authenticate as auth
 import components.main_menu as mm
 import components.utils as ut
 import components.dbconnection as db
+import inquirer as iq
 # from components.authenticate import emailadd
 import time as t
 
@@ -15,6 +16,7 @@ if __name__ == '__main__':
     authenticated_status = False
 
     try:
+        
         while(opened):
             #verify user first
             if authenticated_status == False:
@@ -24,8 +26,8 @@ if __name__ == '__main__':
                 if choice == 'Login':
                     #User Input
                     print("Enter your email and password to login")
-                    emailadd = input("Enter your email address: ")
-                    password = input("Enter your password: ")
+                    emailadd = iq.text(message="Enter your email")
+                    password = iq.password(message='Please enter your password')
 
                     authenticated_status = auth.verifyCredentials(emailadd, password)
                     #load profile
@@ -34,27 +36,27 @@ if __name__ == '__main__':
                 elif choice == 'Register':
                     #method to register user into database
                     print("Enter your credentials to register")
-                    username = input("Enter your name: ")
-                    password = input("Enter your password: ")
-                    email = input("Enter your email: ")
-                    bank = input("Enter the bank you are using: ")
+                    username = iq.text(message="Enter your username")
+                    password = iq.password(message='Please enter your password')
+                    email = iq.text(message="Enter your email")
+                    bank = iq.text(message="Enter your main Bank name")
 
                     auth.register(username, password, bank, email)
 
                 else : 
                     break
                 
-                print(f"What is the status in main loop?: {authenticated_status}")
+                #print(f"What is the status in main loop?: {authenticated_status}")
 
             else:
 
                 opened = mm.mainMenu(emailadd)
                 
                 if opened == False:
-                    print("No need to refresh")
+                    print("Goodbye!")
                 else:
                     print('refreshing')
-                    t.sleep(3)
+                    t.sleep(1.5)
 
         print("Program Exited")
 

@@ -1,4 +1,5 @@
 import os
+import time as t
 from time import sleep
 from sqlalchemy import *
 from sqlalchemy.orm import declarative_base
@@ -8,16 +9,18 @@ from components.dbconnection import user, session
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user_detail'
 
-    account_id = Column(Integer, primary_key = True)
+    account_id = Column(Integer, primary_key=True)
     date_registered = Column(Date)
     name = Column(String(50))
     bank_name = Column(String(50))
     password = Column(String(20))
     balance = Column(NullType)
     email = Column(String(50))
+
 
 class UserProfile:
     def __init__(self, usrid, name, reg_date, bk, bal, email):
@@ -27,6 +30,7 @@ class UserProfile:
         self.bank = bk
         self.balance = bal
         self.email = email
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -39,13 +43,15 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 def screen_clear():
-   # for mac and linux(here, os.name is 'posix')
-   if os.name == 'posix':
-      _ = os.system('clear')
-   else:
-      # for windows platfrom
-      _ = os.system('cls')
+    # for mac and linux(here, os.name is 'posix')
+    if os.name == 'posix':
+        _ = os.system('clear')
+    else:
+        # for windows platfrom
+        _ = os.system('cls')
+
 
 def getUserProfile(email):
 
@@ -70,6 +76,6 @@ def getUserProfile(email):
     acc_email = email
 
     verified_usr = UserProfile(userID, acc_name, acc_reg_date,
-                          acc_bank, acc_bal, acc_email)
+                               acc_bank, acc_bal, acc_email)
 
     return verified_usr
