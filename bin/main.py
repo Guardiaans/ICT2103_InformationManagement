@@ -38,10 +38,12 @@ if __name__ == '__main__':
                     print("Enter your credentials to register")
                     username = iq.text(message="Enter your username")
                     password = iq.password(message='Please enter your password')
-                    email = iq.text(message="Enter your email")
+                    emailadd = iq.text(message="Enter your email")
                     bank = iq.text(message="Enter your main Bank name")
 
-                    auth.register(username, password, bank, email)
+                    print(f"your details are: \n{username},\n{password},\n{emailadd},\n{bank}")
+
+                    authenticated_status = auth.register(username, password, bank, emailadd)
 
                 else : 
                     break
