@@ -1,102 +1,59 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
 import psycopg2
 import sqlalchemy
-from sqlalchemy.orm import declarative_base, sessionmaker
+import components.utils as ut
+from sqlalchemy import Column, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from sqlalchemy import *
 from sqlalchemy.sql import select
+from sqlalchemy.sql.elements import Null
+from sqlalchemy.sql.sqltypes import NullType
+import time
+import concurrent.futures
 
+start = time.perf_counter()
 
 # Using SQLAlchemy reflection example
 try:
-    engine = create_engine('postgresql+psycopg2://bfcyvcjpoysvfm:2d577da4f1484cea46199f86a766e69fc14c6323e655828e032e2e1cdc8d5ed6@ec2-34-200-161-87.compute-1.amazonaws.com:5432/dcr1h5psuc7lvu')
-    print("Connected to DB!")
+    print(f"\t\t{'||' : <10} {'Establishing connection to Database...' : ^10} {'||' : >10}")
+    engine = create_engine(
+        'postgresql+psycopg2://bfcyvcjpoysvfm:2d577da4f1484cea46199f86a766e69fc14c6323e655828e032e2e1cdc8d5ed6@ec2-34-200-161-87.compute-1.amazonaws.com:5432/dcr1h5psuc7lvu')
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        metaData = MetaData(engine)
+        user = Table('user_detail', metaData, autoload=True)
+        category = Table('category', metaData, autoload=True)
+        transaction = Table('transaction_data', metaData, autoload=True)
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+
+        #### Testing threading to connect faster ####
+        # t1 = executor.submit(MetaData, engine)
+        # metaData = t1.result()
+        # t2 = executor.submit(Table, 'user_detail', metaData, autoload=True)
+        # user = t2.result()
+        # t3 = executor.submit(Table, 'category', metaData, autoload=True)
+        # category = t3.result()
+        # t4 = executor.submit(Table, 'transaction_data', metaData, autoload=True)
+        # transaction = t4.result()
+        # t5 = executor.submit(sessionmaker, bind=engine)
+        # DBSession = t5.result()
+        # session = DBSession()
+
+    #print("Connected to DB!")
+    print(f"\t\t{'||' : <10} {'Database connected!' : ^10} {'||' : >29}")
+    time.sleep(1)
+    print(f"\t\t{'||' : <10} {'Redirecting......  ' : ^10} {'||' : >29}")
+    time.sleep(2)
+    
 except:
     print("Error connecting to DB")
-    
-# metaData = MetaData(engine)
-# user = Table('user_detail', metaData, autoload=True)
-# category = Table('category', metaData, autoload=True)
-# transaction = Table('transaction_data', metaData, autoload=True)
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
-
-# stmt = text("SELECT t.transaction_id, t.transaction_date, t.debit_amount, t.credit_amount, t.description_1, t.description_2, c.category_name FROM transaction_data t, user_detail u, category c WHERE t.account_id = u.account_id AND c.category_id = t.category_id AND u.email='csy@gmail.com'")
-# stmt = stmt.columns(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name)
-# results = session.query(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name).from_statement(stmt).all()
-# print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format("id","date","debit", "credit", "description_1","description_2", "category"))
-# print("_________________________________________________________________________________________________________________________________________")
-# for i in results:
-#     print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format(str(i.transaction_id), str(i.transaction_date), str(i.debit_amount), str(i.credit_amount), str(i.description_1), str(i.description_2), str(i.category_name)))
 
 
-# # Base = automap_base()
-# Base = declarative_base()
-# engine = create_engine('postgresql+psycopg2://bfcyvcjpoysvfm:2d577da4f1484cea46199f86a766e69fc14c6323e655828e032e2e1cdc8d5ed6@ec2-34-200-161-87.compute-1.amazonaws.com:5432/dcr1h5psuc7lvu', echo=True)
-# # print(engine.table_names())
-# Session = sessionmaker(bind=engine)
-# session = Session()
-# # Base.prepare(engine, reflect=True)
-# conn = engine.connect()
+### GC's TEST CASE STATEMENTS ###
 
-# metadata_obj = MetaData()
-# # Category = Table('category', metadata_obj,
-# #     Column('category_id', Integer, primary_key=True),
-# #     Column('category_name', String(50)),
-# #     Column('account_id',Integer, ForeignKey("user_detail.account_id"))
-# # )
-
-# User = Table("user_detail", metadata_obj,
-#     Column('account_id', Integer, primary_key=True),
-#     Column('date_registered', Date),
-#     Column('name', String(50), nullable=False),
-#     Column('bank_name', String(50)),
-#     Column('password', String(20), nullable=False),
-#     Column('balance', Numeric),
-#     Column('email', String(50), nullable=False)
-# )
-# Base.metadata_obj.create_all(engine)
-
-# # s = select(User)
-# # result = conn.execute(s)
-# # for i in result:
-# #     print(i.name)
-
-# for t in metadata_obj.sorted_tables:
-#     print(t.name)
-
-# print(User.metadata)
-
-
-
-
-# ## map python class to database table
-# # User = Base.classes.user_detail
-# # Transaction = Base.classes.transaction_data
-# # Category = Base.classes.category
-
-# # category = session.query(Category).first()
-# # print(category.category_name)
-
-# # u1 = session.query(User).first()
-# # print(u1.name)
-# # email = "aym@gmail.com"
-# # password = "password123"
-# # sql_query = session.query(User).from_statement(sqlalchemy.text("SELECT * FROM user_detail WHERE email =:n")).params(n=email)
-# # print(sql_query.first().password)
-
-# # sql = session.query(Transaction,Category).from_statement(sqlalchemy.text("SELECT t.transaction_id, c.category_name FROM transaction_data t JOIN category c ON t.category_id = c.category_id").columns(Transaction.transaction_id, Category.category_name)).first()
-# # print(sql[Category].category_name)
-
-# # stmt = sqlalchemy.text("SELECT t.transaction_id, c.account_id FROM transaction_data t JOIN user_detail c ON t.account_id=c.account_id").columns(Transaction.transaction_id, Category.category_name)
-# # result = conn.execute(stmt)
-
-# # for i in result:
-# #     print(i.User.account_id)
-
-# # email = 'csy@gmail.com'
-# # sql_query = session.query(Transaction, Category, User).from_statement(sqlalchemy.text(
-# "SELECT t.transaction_id, t.debit_amount, c.category_name FROM transaction_data t, user_detail u, category c WHERE t.account_id = u.account_id AND c.category_id = t.category_id AND u.email='csy@gmail.com'"))
-# # print("id   trans_date   debit   credit   description_1                 description_2                     category_id  account_id")
-# # for i in sql_query:
-# #     print("{:<5}{:<13}{:<8}{:<16}{:<30}{:<34}{:<5}{:<5}".format(str(i.Transaction.transaction_id), str(i.Transaction.transaction_date), str(i.Transaction.debit_amount), str(i.Transaction.credit_amount), str(i.Transaction.description_1), str(i.Transaction.description_2), str(i.Transaction.category_id)))
+#verified_user = getUserProfile('kgc@gmail.com')
+# print(verified_user.name)
+#authenticate('Kwang Guan Cong', 'anyhow')
+# getUserID('kgc@gmail.com')
+#print(session.query(exists(user.c.name).where(user.c.name == 'notinDB')).scalar())
+#register("Spongebob", 1234, "krustyKrab", "spongebob@gmail.com")

@@ -1,50 +1,64 @@
-import components.launch as launch
+import components.authenticate as auth
 import components.main_menu as mm
 import components.utils as ut
 import components.dbconnection as db
+import inquirer as iq
+# from components.authenticate import emailadd
 import time as t
 
 opened = True
-#main application function
-def authenticate():
+emailadd = ""
 
-    launch.begin()
 
-    if launch.option == 'Exit':
-        return 'exit'
-
-    else:
-        launch.access(launch.option)
-        if(launch.granted):
-            print(f"Welcome {launch.name} !") 
-            t.sleep(1)
-            return True
-
-    return False
-
+#main running loop here.
 if __name__ == '__main__':
+
     authenticated_status = False
 
     try:
+        
         while(opened):
+            #verify user first
             if authenticated_status == False:
-                authenticated_status = authenticate()
-                print(authenticated_status)
-                if authenticated_status == 'exit':
+                
+                choice = auth.launchAuthenUI()
+
+                if choice == 'Login':
+                    #User Input
+                    print("Enter your email and password to login")
+                    emailadd = iq.text(message="Enter your email")
+                    password = iq.password(message='Please enter your password')
+
+                    authenticated_status = auth.verifyCredentials(emailadd, password)
+                    #load profile
+                    t.sleep(2)
+
+                elif choice == 'Register':
+                    #method to register user into database
+                    print("Enter your credentials to register")
+                    username = iq.text(message="Enter your username")
+                    password = iq.password(message='Please enter your password')
+                    email = iq.text(message="Enter your email")
+                    bank = iq.text(message="Enter your main Bank name")
+
+                    auth.register(username, password, bank, email)
+
+                else : 
                     break
+                
+                #print(f"What is the status in main loop?: {authenticated_status}")
+
             else:
-                #print("Im here")
-                opened = mm.mainMenu()
 
+                opened = mm.mainMenu(emailadd)
+                
                 if opened == False:
-                    print("No need to refresh")
+                    print("Goodbye!")
                 else:
-                    t.sleep(3)
-                    print("In main loop")
                     print('refreshing')
-                    t.sleep(3)
+                    t.sleep(1.5)
 
-            print("Program Exited")
+        print("Program Exited")
 
     except:
         print("Unexpected Error! ")

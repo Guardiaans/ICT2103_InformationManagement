@@ -1,6 +1,8 @@
 import inquirer as iq
 import time as t
 import components.utils as ut
+from components.utils import getUserProfile
+from components.main_menu_components.view_profile import viewProfile
 from components.main_menu_components.compare_user_data import compareUserData
 from components.main_menu_components.manage_budget import manageBudget
 from components.main_menu_components.manage_transaction import manageTransaction
@@ -9,11 +11,12 @@ from components.main_menu_components.view_budget import viewBudget
 from components.main_menu_components.view_prediction import viewPrediction
 from components.main_menu_components.view_transaction_summary import viewTransactionSummary
 
-def mainMenu():
+def mainMenu(email):
     ut.screen_clear()
+    user_profile = getUserProfile(email)
     #Menu options for user
-    menuoption = iq.list_input("Welcome to the Main Menu! What would you like to do today?",
-                              choices=['Upload Data', 
+    menuoption = iq.list_input(f"Welcome to the Main Menu <{user_profile.name}>! What would you like to do today?",
+                              choices=['View Profile', 'Upload Data', 
                               'View Transaction Summary',
                               'View Budget',
                               'View Prediction',
@@ -22,8 +25,9 @@ def mainMenu():
                               'Manage Budget',
                               'Exit'
                               ])
-
-    if (menuoption == 'Upload Data'):
+    if (menuoption) == 'View Profile':
+        viewProfile(email)
+    elif (menuoption == 'Upload Data'):
         uploadData()
     elif (menuoption == 'View Transaction Summary'):
         viewTransactionSummary()
@@ -40,9 +44,9 @@ def mainMenu():
     else:
         #exit or logout option implementation
         print("See you again!")
-        
         return False
 
     t.sleep(1)
 
     return True
+
