@@ -54,6 +54,8 @@ if __name__ == '__main__':
                 
                 if opened == False:
                     print("Goodbye!")
+                elif opened == 'Logout':
+                    authenticated_status = False
                 else:
                     print('refreshing')
                     t.sleep(1.5)

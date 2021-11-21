@@ -1,11 +1,8 @@
 from components.dbconnection import user,session
-from components.utils import getUserProfile
 from sqlalchemy import *
 import inquirer as iq
 
-def viewProfile(emailadd):
-    
-    user_profile = getUserProfile(emailadd)
+def viewProfile(user_profile):
     
     print(f'''
     Hello {user_profile.name} here are your details!
