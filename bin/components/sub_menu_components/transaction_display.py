@@ -15,7 +15,7 @@ def transaction_table(usremail):
                 "t.credit_amount, t.description_1, t.description_2, c.category_name " +
                 " FROM transaction_data t, user_detail u, category c "+
                 "WHERE t.account_id = u.account_id AND c.category_id = t.category_id " + 
-                " AND u.email=:email AND CAST(t.transaction_date as character varying(50)) LIKE ':year-:month-%'") 
+                " AND u.email=:email AND CAST(t.transaction_date as character varying(50)) LIKE ':year-%:month-%'") 
     stmt = stmt.columns(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name)
     stmt = stmt.bindparams(year=int(year), month=int(month), email=email)
     results = session.query(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name).from_statement(stmt).all()
@@ -33,23 +33,12 @@ def transaction_table(usremail):
 def overallSummary(email):
     option = iq.list_input("What would you like to view?",
                             choices=['By Category', 'Debit vs Credit', 'Exit' ])
-<<<<<<< HEAD:bin/components/sub_menu_components/transaction_display.py
-
-    year = iq.text(message="Enter a year <2021>")
-    month = iq.text(message="Enter a month <10>")
-
-    if option == "By Category":
-        emailReturned = email
-        stmt = db.text("SELECT sum(t.debit_amount) as Expense, c.category_name FROM transaction_data t, category c, user_detail u " +
-                    "WHERE t.category_id=c.category_id AND u.account_id=t.account_id AND CAST(t.transaction_date as character varying(50)) LIKE ':year-:month-%' AND u.email=:email " +
-=======
-    year = iq.text(message="Enter a year e.g. 2021>")
-    month = iq.text(message="Enter a month e.g. 10")
+    year = iq.text(message="Enter a year (e.g. 2021)")
+    month = iq.text(message="Enter a month (e.g. 10)")
     if option == "By Category":
         emailReturned = "csy@gmail.com"
         stmt = db.text("SELECT sum(t.debit_amount) as Expense, c.category_name FROM transaction_data t, category c, user_detail u " +
                     "WHERE t.category_id=c.category_id AND u.account_id=t.account_id AND CAST(t.transaction_date as character varying(50)) LIKE ':year-%:month-%' AND u.email=:email " +
->>>>>>> shengyu:bin/components/sub_menu_components/overallSummary.py
                     "GROUP BY c.category_name")
         stmt = stmt.columns(db.transaction.c.debit_amount, db.category.c.category_name)
         stmt = stmt.bindparams(email=emailReturned, year=int(year), month=int(month))
