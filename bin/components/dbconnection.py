@@ -23,6 +23,7 @@ try:
         user = Table('user_detail', metaData, autoload=True)
         category = Table('category', metaData, autoload=True)
         transaction = Table('transaction_data', metaData, autoload=True)
+        budget = Table('budget', metaData, autoload=True)
         DBSession = sessionmaker(bind=engine)
         session = DBSession()
 
