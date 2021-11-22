@@ -1,37 +1,42 @@
 import inquirer as iq
 import components.utils as ut
+import components.sub_menu_components.transaction_management as tm
 
-def manageTransaction():
-    #TODO: 
-    # Implement create / inserting transaction in database
-    # Implementing deleting of transaction in database
-    # Implementing creating of category in database
+def manageTransaction(user_profile):
     
-    #print("managing transaction!")
-
     ut.screen_clear()
+
+    #getting profile information
+    usr_id = user_profile.id
+    usr_email = user_profile.email
+
     #Menu options for user
     menuoption = iq.list_input("Managing transactions!",
                               choices=['Create or Insert transaction', 
                               'Delete transaction',
                               'Create or Insert Category',
+                              'Delete Category',
                               'Back',
                               ])
 
     if (menuoption == 'Create or Insert transaction'):
-        #implement create transaction method.
-        print("Create transaction method here")
-
+        #adding transaction
+        tm.checkCatAndName(usr_email,usr_id)
+        
     elif (menuoption == 'Delete transaction'):
-        #implement delete transaction method.
-        print("delete transaction method here")
+        #adding transaction
+        tm.deleteTransaction(usr_email)
 
     elif (menuoption == 'Create or Insert Category'):
-        #implement create category method.
-        print("create category method here")
+        #inserting category
+        tm.insertCat(usr_email)
+
+    elif (menuoption == 'Delete Category'):
+        #deleting category
+        tm.deleteCat(usr_email)
 
     else:
-        #exit or logout option implementation
+        
         print("returning back to main menu")
         return None
 
