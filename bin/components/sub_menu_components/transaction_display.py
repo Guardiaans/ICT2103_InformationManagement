@@ -1,22 +1,50 @@
+from components.dbconnection import *
+import inquirer as iq
 import components.dbconnection as db
 import inquirer as iq
 import time as t
 import components.utils as ut
 import matplotlib.pyplot as plt
 
-def overallSummary():
-    option = iq.list_input("What would you like to view?",
-                            choices=['By Category', 'Debit vs Credit', 'Exit' ])
+def transaction_table(usremail):
+    print("viewing transaction table")
     year = iq.text(message="Enter a year <2021>")
     month = iq.text(message="Enter a month <10>")
+    email=usremail
+    stmt = text("SELECT t.transaction_id, t.transaction_date, t.debit_amount, " +
+                "t.credit_amount, t.description_1, t.description_2, c.category_name " +
+                " FROM transaction_data t, user_detail u, category c "+
+                "WHERE t.account_id = u.account_id AND c.category_id = t.category_id " + 
+                " AND u.email=:email AND CAST(t.transaction_date as character varying(50)) LIKE ':year-:month-%'") 
+    stmt = stmt.columns(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name)
+    stmt = stmt.bindparams(year=int(year), month=int(month), email=email)
+    results = session.query(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name).from_statement(stmt).all()
+    print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format("id","date","debit", "credit", "description_1","description_2", "category"))
+    print("_________________________________________________________________________________________________________________________________________")
+    for i in results:
+        print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format(str(i.transaction_id), str(i.transaction_date), str(i.debit_amount), str(i.credit_amount), str(i.description_1), str(i.description_2), str(i.category_name)))
+    
+    
+    menuoption = iq.list_input(f"Select an option",
+                              choices=['Back',
+                              ])
+    return menuoption
+
+def overallSummary(email):
+    option = iq.list_input("What would you like to view?",
+                            choices=['By Category', 'Debit vs Credit', 'Exit' ])
+
+    year = iq.text(message="Enter a year <2021>")
+    month = iq.text(message="Enter a month <10>")
+
     if option == "By Category":
-        emailReturned = "csy@gmail.com"
-        stmt = db.text("SELECT sum(t.credit_amount) as Expense, c.category_name FROM transaction_data t, category c, user_detail u " +
+        emailReturned = email
+        stmt = db.text("SELECT sum(t.debit_amount) as Expense, c.category_name FROM transaction_data t, category c, user_detail u " +
                     "WHERE t.category_id=c.category_id AND u.account_id=t.account_id AND CAST(t.transaction_date as character varying(50)) LIKE ':year-:month-%' AND u.email=:email " +
                     "GROUP BY c.category_name")
-        stmt = stmt.columns(db.transaction.c.credit_amount, db.category.c.category_name)
+        stmt = stmt.columns(db.transaction.c.debit_amount, db.category.c.category_name)
         stmt = stmt.bindparams(email=emailReturned, year=int(year), month=int(month))
-        results = db.session.query(db.transaction.c.credit_amount,
+        results = db.session.query(db.transaction.c.debit_amount,
                                 db.category.c.category_name).from_statement(stmt).all()
         # print(results)
         # Pie chart, where the slices will be ordered and plotted counter-clockwise:
@@ -25,9 +53,9 @@ def overallSummary():
         cleanLabels = []
         cleanSizes = []
         for i in results:
-            # print(type(i.credit_amount))
-            # print(i.credit_amount)
-            sizes.append(i.credit_amount[1:].replace(",", ""))
+            # print(type(i.debit_amount))
+            # print(i.debit_amount)
+            sizes.append(i.debit_amount[1:].replace(",", ""))
             labels.append(i.category_name)
 
         # print(labels)
@@ -45,9 +73,13 @@ def overallSummary():
                 shadow=True, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-        plt.show()
+        print("Displaying your graph!")
+
+        return plt.show()
+
     elif option == "Debit vs Credit":
-        emailReturned = "csy@gmail.com"
+
+        emailReturned = email
         stmt = db.text("SELECT sum(t.debit_amount) as debit, sum(t.credit_amount) as credit " + 
                     "FROM transaction_data t, user_detail u WHERE t.account_id=u.account_id " +  
                     "AND CAST(t.transaction_date as character varying(50)) LIKE ':year-:month-%' AND u.email=:email")
@@ -69,5 +101,8 @@ def overallSummary():
                 shadow=True, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
-        plt.show()
-    return
+        print("Displaying your graph!")
+
+        return plt.show()
+
+    return 
