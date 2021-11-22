@@ -3,6 +3,7 @@ import inquirer as iq
 import components.utils as ut
 import sqlalchemy as sq
 def viewBudget(user_profile):
+    email=user_profile.email
     #TODO: Implement view budget Method()
     stmt = sq.text("SELECT b.budget_id, b.budget_amount, b.month, b.year, b.description "
                    ", b.actual_spent, c.category_name FROM budget b, user_detail u, category c "
@@ -10,7 +11,7 @@ def viewBudget(user_profile):
                    "AND u.email=:email")
     stmt = stmt.columns(budget.c.budget_id, budget.c.budget_amount, budget.c.month,
                         budget.c.year, budget.c.description, budget.c.actual_spent, category.c.category_name)
-    stmt = stmt.bindparams(email=str(user_profile))
+    stmt = stmt.bindparams(email=str(email))
     results = session.query(budget.c.budget_id, budget.c.budget_amount, budget.c.month,
                             budget.c.year, budget.c.description, budget.c.actual_spent
                             , category.c.category_name).from_statement(stmt).all()
