@@ -1,6 +1,6 @@
 import psycopg2
 import sqlalchemy
-import components.utils as ut
+#import components.utils as ut
 from sqlalchemy import Column, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from sqlalchemy import *
@@ -57,3 +57,4 @@ except:
 # getUserID('kgc@gmail.com')
 #print(session.query(exists(user.c.name).where(user.c.name == 'notinDB')).scalar())
 #register("Spongebob", 1234, "krustyKrab", "spongebob@gmail.com")
+

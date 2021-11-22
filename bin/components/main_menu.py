@@ -23,10 +23,11 @@ def mainMenu(email):
                               'Compare User data',
                               'Manage Transactions',
                               'Manage Budget',
+                              'Logout',
                               'Exit'
                               ])
     if (menuoption) == 'View Profile':
-        viewProfile(email)
+        viewProfile(user_profile)
     elif (menuoption == 'Upload Data'):
         uploadData()
     elif (menuoption == 'View Transaction Summary'):
@@ -36,11 +37,15 @@ def mainMenu(email):
     elif (menuoption == 'View Prediction'):
         viewPrediction()
     elif (menuoption == 'Compare User data'):
-        compareUserData()
+        compareUserData(user_profile)
     elif (menuoption == 'Manage Transactions'):
         manageTransaction()
     elif (menuoption == 'Manage Budget'):
         manageBudget()
+    elif (menuoption == 'Logout'):
+        print(f"\n\t\t\t\t{'||' : <10}{ut.bcolors.OKBLUE}{'Logging you out!' : ^10}{ut.bcolors.ENDC}{'||' : >10}")
+        t.sleep(1.5)
+        return 'Logout'
     else:
         #exit or logout option implementation
         print("See you again!")
