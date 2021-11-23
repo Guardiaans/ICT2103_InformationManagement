@@ -7605,6 +7605,7 @@ userData = [{
     ]
 }]
 
+
 collection.delete_many({})
 # post = {"name" : "tim", "score": 5}
 collection.insert_many(userData) # -- insert bulk json
