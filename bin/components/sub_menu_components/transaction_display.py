@@ -5,6 +5,7 @@ import inquirer as iq
 import time as t
 # import components.utils as ut
 import matplotlib.pyplot as plt
+import re
 
 
 from pymongo import MongoClient
@@ -16,21 +17,26 @@ def transaction_table():
     print("viewing transaction table")
     year = iq.text(message="Enter a year <2021>")
     month = iq.text(message="Enter a month <10>")
-    query = {"Name": "/Sheng/" }
-    result = collection.find(query)
+    date = month+'/'+year
+    print(type(date))
+    email = 'csy@gmail.com'
+
+    query = {"email":email,"transactions.category":{"$regex": "Food" }}
+    query2 = {"account_id" : 1001}
+    result = collection.find(query2)
     transactions = {}
     # print(result)
     for x in result:
-        # print(x)
+        print(x)
         transactions = x['transactions']
 
-    print(transactions[0])
-    # index = 0
-    print("{:<13}{:<12}{:<12}{:<50}{:<50}{:<5}".format("date","debit", "credit", "description_1","description_2", "category"))
-    print("_________________________________________________________________________________________________________________________________________")
-    for i in transactions:
-        print("{:<13}{:<12}{:<12}{:<50}{:<50}{:<5}".format(i["Transaction_Date"], i["debit_amount"], i["credit_amount"], i["description_1"], i["description_2"], i["category"]))
-    #     index += 1
+    # print(transactions[0])
+    print(len(transactions))
+    # print("{:<13}{:<12}{:<12}{:<50}{:<50}{:<5}".format("date","debit", "credit", "description_1","description_2", "category"))
+    # print("_________________________________________________________________________________________________________________________________________")
+    # for i in transactions:
+    #     print("{:<13}{:<12}{:<12}{:<50}{:<50}{:<5}".format(i["transaction_date"], i["debit_amount"], i["credit_amount"], i["description_1"], i["description_2"], i["category"]))
+
 
 
 transaction_table()
