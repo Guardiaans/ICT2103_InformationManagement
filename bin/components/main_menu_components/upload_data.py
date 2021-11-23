@@ -26,7 +26,7 @@ def uploadData():
         print('Upload Success!')
     except:
         db.session.rollback()
-        print('Upload Failed! Please check your filename, directory or ur data formating in the excel')
+        print('\nUpload Failed! Please check your filename, directory or ur data formating in the excel\n')
     return
     
 

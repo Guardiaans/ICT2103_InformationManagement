@@ -11,7 +11,8 @@ def compareUserData(user_profile):
     stmt = stmt.columns(user.c.email)
     results = session.query(user.c.email).from_statement(stmt).all()
     for items in results:
-        options.append(items[0])
+        if items != user_profile.email:
+            options.append(items[0])
     
     menuoption = iq.list_input(f"Select a user to compare with! ",
                               choices=options)

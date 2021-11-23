@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
                     authenticated_status = auth.verifyCredentials(emailadd, password)
                     #load profile
-                    t.sleep(2)
+                    t.sleep(1)
 
                 elif choice == 'Register':
                     #method to register user into database
@@ -41,9 +41,25 @@ if __name__ == '__main__':
                     emailadd = iq.text(message="Enter your email")
                     bank = iq.text(message="Enter your main Bank name")
 
-                    print(f"your details are: \n{username},\n{password},\n{emailadd},\n{bank}")
+                    print(f'''
+                    Please confirm your registration
 
-                    authenticated_status = auth.register(username, password, bank, emailadd)
+                    USERNAME           : {username}
+                    PASSWORD           : {password}
+                    EMAIL              : {emailadd}
+                    BANK ORGRANISATION : {bank}
+                    ''')
+
+                    menuoption = iq.list_input(message=f"Select an option",
+                              choices=['Confirm','Cancel'
+                              ])
+
+                    if menuoption == 'Confirm':
+                        authenticated_status = auth.register(username, password, bank, emailadd)
+                    else:
+                        print("Returning back to menu..")
+                        t.sleep(1)
+                        pass
 
                 else : 
                     break
@@ -60,7 +76,7 @@ if __name__ == '__main__':
                     authenticated_status = False
                 else:
                     print('refreshing')
-                    t.sleep(1.5)
+                    t.sleep(1)
 
         print("Program Exited")
 
