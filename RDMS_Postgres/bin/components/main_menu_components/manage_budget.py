@@ -29,16 +29,13 @@ def manageBudget(user_profile):
                        ", b.actual_spent, c.category_name FROM budget b, user_detail u, category c "
                        "WHERE b.account_id = u.account_id AND c.category_id = b.category_id "
                        "AND u.email=:email")
-        #implement create transaction method.
-        print("Create budget method here")
-
+        
     elif (menuoption == 'Delete budget'):
         #implement delete transaction method.
         print("delete budget method here")
 
     else:
-        #exit or logout option implementation
-        print("returning back to main menu")
+        pass
         return None
 
     return None

@@ -52,20 +52,20 @@ def register(usrname, pw, bk, usremail):
         # check if user name or email exist in database
         email = session.query(exists(user.c.email).where(
             user.c.email == usremail)).scalar()
-        print(f"is there an existing email?: {email}")
+        #print(f"is there an existing email?: {email}")
 
         name = session.query(exists(user.c.name).where(
             user.c.name == usrname)).scalar()
-        print(f"is there an existing name?: {name}")
+        #print(f"is there an existing name?: {name}")
         
         t.sleep(1)
         # registering logic
         if email or name == True:
             if email == True:
-                print("Existing email in use!")
+                print("\nExisting email in use!")
                 t.sleep(1)
             else:
-                print("User name have been taken")
+                print("\nUser name have been taken")
                 t.sleep(1)
             
             return False

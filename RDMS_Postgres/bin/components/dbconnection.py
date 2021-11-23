@@ -13,7 +13,7 @@ try:
     print(f"\t\t{'||' : <10} {'Database connected!' : ^10} {'||' : >29}")
     time.sleep(1)
     print(f"\t\t{'||' : <10} {'Redirecting......  ' : ^10} {'||' : >29}")
-    time.sleep(2)
+    time.sleep(1)
     
 except:
     print("Error connecting to DB")
