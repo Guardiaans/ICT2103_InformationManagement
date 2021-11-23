@@ -23,4 +23,7 @@ def viewBudget(user_profile):
                                                                 str(i.month), str(i.year),
                                                                 str(i.description), str(i.actual_spent),
                                                                 str(i.category_name)))
-    return
+    menuoption = iq.list_input(f"Select an option",
+                              choices=['Back',
+                              ])
+    return menuoption
