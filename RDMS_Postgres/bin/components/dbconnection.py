@@ -7,6 +7,7 @@ from sqlalchemy import *
 from sqlalchemy.sql import select
 from sqlalchemy.sql.elements import Null
 from sqlalchemy.sql.sqltypes import NullType
+from datetime import date
 import time
 import concurrent.futures
 
@@ -48,14 +49,3 @@ try:
     
 except:
     print("Error connecting to DB")
-
-
-### GC's TEST CASE STATEMENTS ###
-
-#verified_user = getUserProfile('kgc@gmail.com')
-# print(verified_user.name)
-#authenticate('Kwang Guan Cong', 'anyhow')
-# getUserID('kgc@gmail.com')
-#print(session.query(exists(user.c.name).where(user.c.name == 'notinDB')).scalar())
-#register("Spongebob", 1234, "krustyKrab", "spongebob@gmail.com")
-
