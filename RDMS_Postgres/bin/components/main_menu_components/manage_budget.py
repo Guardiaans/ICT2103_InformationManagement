@@ -2,8 +2,6 @@ from components.dbconnection import category, budget, user, session
 import inquirer as iq
 import components.utils as ut
 import sqlalchemy as sq
-from components.sub_menu_components.budget_management import checkCatName, deleteBudget
-
 
 def manageBudget(user_profile):
     #TODO: 
@@ -22,7 +20,6 @@ def manageBudget(user_profile):
                               ])
 
     if (menuoption == 'Create budget'):
-<<<<<<< Updated upstream:RDMS_Postgres/bin/components/main_menu_components/manage_budget.py
         budgetAmount = iq.text(message="Enter budget amount")
         monthInsert = iq.text(message="Enter month number")
         yearInsert = iq.text(message="Enter year")
@@ -33,14 +30,9 @@ def manageBudget(user_profile):
                        "WHERE b.account_id = u.account_id AND c.category_id = b.category_id "
                        "AND u.email=:email")
         
-=======
-        checkCatName(user_profile)
-
->>>>>>> Stashed changes:bin/components/main_menu_components/manage_budget.py
     elif (menuoption == 'Delete budget'):
-        deleteBudget(user_profile)
         #implement delete transaction method.
-        #print("delete budget method here")
+        print("delete budget method here")
 
     else:
         pass
