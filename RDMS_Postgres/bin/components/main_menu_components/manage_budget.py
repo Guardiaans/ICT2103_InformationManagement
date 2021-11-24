@@ -22,6 +22,7 @@ def manageBudget(user_profile):
                               ])
 
     if (menuoption == 'Create budget'):
+<<<<<<< Updated upstream:RDMS_Postgres/bin/components/main_menu_components/manage_budget.py
         budgetAmount = iq.text(message="Enter budget amount")
         monthInsert = iq.text(message="Enter month number")
         yearInsert = iq.text(message="Enter year")
@@ -31,9 +32,11 @@ def manageBudget(user_profile):
                        ", b.actual_spent, c.category_name FROM budget b, user_detail u, category c "
                        "WHERE b.account_id = u.account_id AND c.category_id = b.category_id "
                        "AND u.email=:email")
-
+        
+=======
         checkCatName(user_profile)
 
+>>>>>>> Stashed changes:bin/components/main_menu_components/manage_budget.py
     elif (menuoption == 'Delete budget'):
         deleteBudget(user_profile)
         #implement delete transaction method.

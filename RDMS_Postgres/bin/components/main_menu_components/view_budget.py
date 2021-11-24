@@ -24,9 +24,12 @@ def viewBudget(user_profile):
                                                                 str(i.month), str(i.year),
                                                                 str(i.description), str(i.actual_spent),
                                                                 str(i.category_name)))
+<<<<<<< Updated upstream:RDMS_Postgres/bin/components/main_menu_components/view_budget.py
     menuoption = iq.list_input(f"Select an option",
                               choices=['Back',
                               ])
     return menuoption
+=======
 
     return
+>>>>>>> Stashed changes:bin/components/main_menu_components/view_budget.py
