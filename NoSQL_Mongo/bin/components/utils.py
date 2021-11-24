@@ -1,25 +1,19 @@
 import os
 import time as t
 from time import sleep
-from sqlalchemy import *
-from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql.sqltypes import NullType
-from components.dbconnection import user, session
+from components.dbconnection import user_data
 
+# class User(Base):
+#     __tablename__ = 'user_detail'
 
-Base = declarative_base()
-
-
-class User(Base):
-    __tablename__ = 'user_detail'
-
-    account_id = Column(Integer, primary_key=True)
-    date_registered = Column(Date)
-    name = Column(String(50))
-    bank_name = Column(String(50))
-    password = Column(String(20))
-    balance = Column(NullType)
-    email = Column(String(50))
+#     account_id = Column(Integer, primary_key=True)
+#     date_registered = Column(Date)
+#     name = Column(String(50))
+#     bank_name = Column(String(50))
+#     password = Column(String(20))
+#     balance = Column(NullType)
+#     email = Column(String(50))
 
 
 class UserProfile:
@@ -53,29 +47,23 @@ def screen_clear():
         _ = os.system('cls')
 
 
-def getUserProfile(email):
+def getUserProfile(email_input):
 
-    stmt = text(
-        f"SELECT ud.account_id, ud.date_registered, ud.name, ud.bank_name, ud.balance FROM user_detail ud WHERE ud.email = '{email}' ")
-    data = stmt.columns(user.c.account_id, user.c.date_registered,
-                        user.c.name, user.c.bank_name, user.c.balance)
-    result = session.query(user.c.account_id, user.c.date_registered, user.c.name,
-                           user.c.bank_name, user.c.balance).from_statement(data).all()
+    ## MONGODB QUERY ##
+    profile = {}
+    myquery = {"Email": {'$exists': 'true', '$eq': email_input}}
+    cur = user_data.find(myquery)
+    for x in cur:
+        profile = x
 
-    account_id = [item[0] for item in result]
-    account_registered_date = [item[1] for item in result]
-    account_name = [item[2] for item in result]
-    account_bank = [item[3] for item in result]
-    account_balance = [item[4] for item in result]
+    account_id = profile['Account_Id']
+    account_registered_date = profile['Date_Registered']
+    account_name = profile['Name']
+    account_bank = profile['Bank_Name']
+    account_balance = profile['Balance']
+    account_email = email_input
 
-    userID = account_id[0]
-    acc_reg_date = account_registered_date[0]
-    acc_name = account_name[0]
-    acc_bank = account_bank[0]
-    acc_bal = account_balance[0]
-    acc_email = email
-
-    verified_usr = UserProfile(userID, acc_name, acc_reg_date,
-                               acc_bank, acc_bal, acc_email)
+    verified_usr = UserProfile(account_id, account_name, account_registered_date,
+                               account_bank, account_balance, account_email)
 
     return verified_usr

@@ -1,5 +1,3 @@
-from components.dbconnection import user,session
-from sqlalchemy import *
 import inquirer as iq
 
 def viewProfile(user_profile):

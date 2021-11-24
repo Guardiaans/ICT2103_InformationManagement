@@ -1,9 +1,7 @@
 import components.authenticate as auth
 import components.main_menu as mm
 import components.utils as ut
-import components.dbconnection as db
 import inquirer as iq
-# from components.authenticate import emailadd
 import time as t
 
 opened = True
@@ -64,7 +62,6 @@ if __name__ == '__main__':
                 else : 
                     break
                 
-                #print(f"What is the status in main loop?: {authenticated_status}")
 
             else:
 
