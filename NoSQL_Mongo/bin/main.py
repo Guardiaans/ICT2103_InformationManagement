@@ -77,8 +77,8 @@ if __name__ == '__main__':
 
         print("Program Exited")
 
-    except:
-        print("Unexpected Error! ")
+    except Exception as e:
+        print(e)
     
 
     
