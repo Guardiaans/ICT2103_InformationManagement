@@ -9,19 +9,7 @@ import hashlib
 import hmac
 import datetime as dt
 
-## INCREMENT COUNTER AS MONGODB DO NOT SUPPORT AUTO INCREMENT ##
 
-
-def getCounter():
-    count = 0
-    query = {'count': {'$exists': 'true'}}
-    acc_id_counter = user_data.find(query)
-    for x in acc_id_counter:
-        count = x['count']
-    count += 1
-    newval = {'$set': {'count': count}}
-    user_data.update_one(query, newval)
-    return count
 
 ## CLIENT SIDE HASHING FOR MONGODB ##
 
