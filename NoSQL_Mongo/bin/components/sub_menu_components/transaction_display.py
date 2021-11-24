@@ -1,17 +1,11 @@
 # from components.dbconnection import *
 # import inquirer as iq
-# import components.dbconnection as db
+import components.dbconnection as db
 import inquirer as iq
 import time as t
 # import components.utils as ut
 import matplotlib.pyplot as plt
 import re
-
-
-from pymongo import MongoClient
-cluster = MongoClient("mongodb+srv://shengyu98:PiJF4JXI@cluster0.zwj7f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-db = cluster["expenseTracker"]
-collection = db["expenseTracker"]
 
 def transaction_table():
     print("viewing transaction table")
@@ -23,7 +17,7 @@ def transaction_table():
 
     query = {"email":email,"transactions.category":{"$regex": "Food" }}
     query2 = {"account_id" : 1001}
-    result = collection.find(query2)
+    result = db.transactions.find(query2)
     transactions = {}
     # print(result)
     for x in result:
