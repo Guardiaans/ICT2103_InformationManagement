@@ -1,6 +1,7 @@
 from components.dbconnection import category, transaction,user,session
 import sqlalchemy as sq
 import inquirer as iq
+from decimal import *
 
 def compareUserData(user_profile):
     #TODO: Implement method by using data from database
@@ -19,49 +20,32 @@ def compareUserData(user_profile):
 
     cEmail = menuoption
 
-    stmt = sq.text("SELECT category.category_name, SUM(transaction_data.debit_amount) " + \
-    "FROM transaction_data " +\
-    "JOIN category " + \
-    "ON transaction_data.category_id = category.category_id " + \
-    "JOIN user_detail " + \
-    "ON transaction_data.account_id = user_detail.account_id " + \
-    "WHERE user_detail.email=:userEmail " + \
-    "GROUP BY category.category_name " + \
-    "HAVING SUM(transaction_data.debit_amount) > '0' " + \
-    "ORDER BY category.category_name ASC")
-    stmt = stmt.columns(category.c.category_name, transaction.c.debit_amount)
-    stmt = stmt.bindparams(userEmail = user_profile.email)
-    results = session.query(category.c.category_name, transaction.c.debit_amount).from_statement(stmt).all()
+    result = db.transactions.aggregate([{ "$match" : {"email" : user_profile, "debit_amount" : {"$gt":0}}}, {"$group": {"_id" : "$category",  "totalAmt" : {"$sum": "$debit_amount"}}}])
 
-    #printing of result
-    print("User: ", user_profile.email)
-    print("{:<20}{:<12}".format("Category", "Total Amount"))
-    print("______________________________________________________________________")
-    for i in results:
-        print("{:<20}{:<12}".format(str(i.category_name), str(i.debit_amount)))
-    print("\n")
+    #choose the user you want to compare with
+    result2 = db.transactions.aggregate([{ "$match" : {"email" : cEmail, "debit_amount" : {"$gt":0}}}, {"$group": {"_id" : "$category",  "totalAmt" : {"$sum": "$debit_amount"}}}])
 
-    stmt2 = sq.text("SELECT category.category_name, SUM(transaction_data.debit_amount) " + \
-    "FROM transaction_data " +\
-    "JOIN category " + \
-    "ON transaction_data.category_id = category.category_id " + \
-    "JOIN user_detail " + \
-    "ON transaction_data.account_id = user_detail.account_id " + \
-    "WHERE user_detail.email=:compareEmail " + \
-    "GROUP BY category.category_name " + \
-    "HAVING SUM(transaction_data.debit_amount) > '0' " + \
-    "ORDER BY category.category_name ASC")
-    stmt2 = stmt2.columns(category.c.category_name, transaction.c.debit_amount)
-    stmt2 = stmt2.bindparams(compareEmail = cEmail)
-    results = session.query(category.c.category_name, transaction.c.debit_amount).from_statement(stmt2).all()
+    resultDisplay = []
+    for x in result:
+        resultDisplay.append(x)
 
-    #printing of result
-    print("Comparison: ", cEmail)
-    print("{:<20}{:<12}".format("Category", "Total Amount"))
-    print("______________________________________________________________________")
-    for i in results:
-        print("{:<20}{:<12}".format(str(i.category_name), str(i.debit_amount)))
-    print("\n")
+    resultDisplay2 = []
+    for x in result2:
+        resultDisplay2.append(x)
+
+    getcontext().prec = 2
+    print("Total amount spent for user: ", user_profile)
+    print("{:<30}{:<15}".format("Category","Total Amount spent"))
+    print(80*"_")
+    for i in resultDisplay:
+        print(f"{i['_id']:<30}", f"{(i['totalAmt']):<15.2f}")
+
+    print("\n\n")
+    print("Total amount spent for user: ", cEmail)
+    print("{:<30}{:<15}".format("Category","Total Amount spent"))
+    print(80*"_")
+    for i in resultDisplay2:
+        print(f"{i['_id']:<30}", f"{(i['totalAmt']):<15.2f}")
 
     menuoption = iq.list_input(f"Select an option",
                                 choices=['Back',

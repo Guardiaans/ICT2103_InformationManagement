@@ -7,42 +7,64 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import *
 from sqlalchemy.sql import select
 from components.dbconnection import session, category, user, transaction
+import pprint
+from bson.objectid import ObjectId
+import datetime
+
+
+class dateInput():
+    def __init__(self,yr , mnth) -> None:
+        self.year = yr
+        self.month = mnth
+def getDateInput():
+    year = iq.text(message="Enter a year (e.g. 2021)")
+    month = iq.text(message="Enter a month (e.g. 10)")
+    d = dateInput(year, month)
+    return d
 
 #### INSERTING CATEGORY FUCNTION ####
 
 def insertCat(u_email):
-    uEmail = u_email
-    categoryInsert = iq.text(message="Enter the new category name")
-    # select statement to check for category name
-    stmt1 = text("SELECT category.category_name " +
-                 "FROM category " +
-                 "WHERE category.category_name=:whichCategory AND " +
-                 "category.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-    stmt1 = stmt1.columns(category.c.category_name)
-    stmt1 = stmt1.bindparams(whichCategory=categoryInsert, userEmail=uEmail)
-    results = session.query(
-        category.c.category_name).from_statement(stmt1).all()
+    
+    insertName = ""
+    insertAccID = ""
 
-    # getting user ID
-    stmt2 = text(
-        "SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail")
-    stmt2 = stmt2.columns(user.c.account_id)
-    stmt2 = stmt2.bindparams(userEmail=uEmail)
-    results2 = session.query(user.c.account_id).from_statement(stmt2).all()
-    for i in results2:
-        uID = (str(i.account_id))
+    result = db.transactions.find({"email": u_email})
 
-    # if category name exist --> then do something, else --> do something
-    if results:
-        # do something if there is data
-        print("Category already exists")
-    else:
-        stmt3 = text(
-            "INSERT INTO category (category_name, account_id) VALUES (:categoryName, :userID)")
-        stmt3 = stmt3.bindparams(categoryName=categoryInsert, userID=uID)
-        session.execute(stmt3)
-        session.commit()
-        print("Category successfully added")
+    transactionDisplay = []
+    for x in result:    
+        transactionDisplay.append(x)
+
+    for i in transactionDisplay:
+        insertName = (str(i["name"]))
+        insertAccID = (str(i["account_id"]))
+
+    year = input("Enter a year (e.g. 2021): ")
+    month = input("Enter a month (e.g. 10): ")
+    day = input("Enter the day (e.g. 24): ")
+    insertDebit = input("Enter debit amount: ")
+    insertCredit = input("Enter credit amount: ")
+    insertDesc1 = input("Enter description if any: ")
+    insertDesc2 = input("Enter description if any: ")
+    insertCategory = input("Enter the category: ")
+
+    try:
+        db.transactions.insert_one(
+            {
+            "transaction_date": datetime.datetime(int(year), int(month), int(day), 0, 0),
+            "debit_amount" : int(insertDebit),
+            "credit_amount" : int(insertCredit),
+            "description_1" : insertDesc1,
+            "description_2" : insertDesc2,
+            "category" : insertCategory,
+            "name" : insertName,
+            "email" : u_email,
+            "account_id" : insertAccID
+            }
+        ).inserted_id
+        print("Transaction successfully added!")
+    except:
+        print("Transaction not added!")
 
     menuoption = iq.list_input(f"Select an option",
                               choices=['Back',
@@ -81,28 +103,47 @@ def deleteCat(u_email):
 
 #### START INSERT TRANSACTION FUNCTIONS ####
 
-def insertTransaction(catName, user_Id):
-    print("this is the insert transaction function")
-    #getting category ID
-    stmt2 = text("SELECT category.category_id FROM category WHERE category.category_name=:categoryName AND category.account_id=:userID")
-    stmt2 = stmt2.columns(category.c.category_id)
-    stmt2 = stmt2.bindparams(categoryName = catName, userID = user_Id)
-    results2 = session.query(category.c.category_id).from_statement(stmt2).all()
-    for i in results2:
-        catID = (str(i.category_id))
+def insertTransaction(u_email):
+    
+    insertName = ""
+    insertAccID = ""
 
-    insertDebit = input("Please enter debit amount: ")
-    insertCredit = input("Please enter credit amount: ")
-    insertDesc1 = input("Please enter description if any: ")
-    insertDesc2 = input("Please enter remarks if any: ")
-    insertDate = input("Please enter date(yyyy-mm-dd): ")
+    result = db.transactions.find({"email": u_email})
 
-    stmt4 = text("INSERT INTO transaction_data (transaction_date, debit_amount, credit_amount, description_1, description_2, category_id, account_id) " + \
-    "VALUES (:tDate, :tDebit, :tCredit, :tDesc1, :tDesc2, :tCatID, :tAccID)")
-    stmt4 = stmt4.bindparams(tDate = insertDate, tDebit = insertDebit, tCredit = insertCredit, tDesc1 = insertDesc1, tDesc2 = insertDesc2, tCatID = catID, tAccID = user_Id)
-    session.execute(stmt4)
-    session.commit()
-    print("Transaction successfully added")
+    transactionDisplay = []
+    for x in result:    
+        transactionDisplay.append(x)
+
+    for i in transactionDisplay:
+        insertName = (str(i["name"]))
+        insertAccID = (str(i["account_id"]))
+
+    year = input("Enter a year (e.g. 2021): ")
+    month = input("Enter a month (e.g. 10): ")
+    day = input("Enter the day (e.g. 24): ")
+    insertDebit = input("Enter debit amount: ")
+    insertCredit = input("Enter credit amount: ")
+    insertDesc1 = input("Enter description if any: ")
+    insertDesc2 = input("Enter description if any: ")
+    insertCategory = input("Enter the category: ")
+
+    try:
+        db.transactions.insert_one(
+            {
+            "transaction_date": datetime.datetime(int(year), int(month), int(day), 0, 0),
+            "debit_amount" : int(insertDebit),
+            "credit_amount" : int(insertCredit),
+            "description_1" : insertDesc1,
+            "description_2" : insertDesc2,
+            "category" : insertCategory,
+            "name" : insertName,
+            "email" : u_email,
+            "account_id" : insertAccID
+            }
+        ).inserted_id
+        print("Transaction successfully added!")
+    except:
+        print("Transaction not added!")
 
 def checkCatAndName(u_email,u_id):
 
@@ -145,48 +186,31 @@ def checkCatAndName(u_email,u_id):
 #### START DELETE TRANSACTION FUNCTIONS ####
 
 def deleteTransaction(u_email):
-    uEmail = u_email
-    print("viewing transaction table")
-    year = iq.text(message="Enter a year <2021>")
-    month = iq.text(message="Enter a month <10>")
+    date = getDateInput()
 
-    print("Transactions for user: ", u_email)
-    
-    stmt7 = text("SELECT t.transaction_id, t.transaction_date, t.debit_amount, t.credit_amount, t.description_1, t.description_2, c.category_name " + \
-    "FROM transaction_data AS t " + \
-    "JOIN category AS c " + \
-    "ON t.category_id = c.category_id " + \
-    "WHERE t.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email = :userEmail) " + \
-    "AND CAST(t.transaction_date as character varying(50)) LIKE ':year-%:month-%' " + \
-    "Order By t.transaction_id ASC")
-    stmt7 = stmt7.columns(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name)
-    stmt7 = stmt7.bindparams(userEmail = u_email, year = int(year), month = int(month))
+    result = db.transactions.find({"email":u_email, "$expr": {"$eq":[{"$year": "$transaction_date"}, int(date.year)], "$eq": [{ "$month": "$transaction_date" }, int(date.month)] }}).sort("transaction_date",1)
+    transactionDisplay = []
+    for x in result:    
+        transactionDisplay.append(x)
 
-    results3 = session.query(transaction.c.transaction_id, transaction.c.transaction_date, transaction.c.debit_amount, transaction.c.credit_amount, transaction.c.description_1, transaction.c.description_2, category.c.category_name).from_statement(stmt7).all()
-    print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format("id","date","debit", "credit", "description_1","description_2", "category"))
-    print("_________________________________________________________________________________________________________________________________________")
-    for i in results3:
-        print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format(str(i.transaction_id), str(i.transaction_date), str(i.debit_amount), str(i.credit_amount), str(i.description_1), str(i.description_2), str(i.category_name)))
+    print("{:<30}{:<15}{:<12}{:<12}{:<50}{:<50}{:<5}".format("ID","date","debit", "credit", "description_1","description_2", "category"))
+    print(200*"_")
+    for i in transactionDisplay:
+        print("{:<30}{:<15}{:<12}{:<12}{:<50}{:<50}{:<5}".format(str(i["_id"]), str(i["transaction_date"]).replace("00:00:00",""), str(i["debit_amount"]), str(i["credit_amount"]),str(i["description_1"]), str(i["description_2"]), str(i["category"])))
 
-    tID = input("Please enter the transaction ID that you wish to delete: ")
+    delete = input("Please enter the transaction ID which you want to delete: ")
 
-    stmt = text("SELECT transaction_data.transaction_id " +
-            "FROM transaction_data " +
-            "WHERE transaction_data.transaction_id=:whichTransaction AND " +
-            "transaction_data.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)") 
-    stmt = stmt.columns(transaction.c.transaction_id)
-    stmt = stmt.bindparams(whichTransaction = tID, userEmail = uEmail)   
-    results = session.query(transaction.c.transaction_id).from_statement(stmt).all()
-
-    if results:
-        stmt1 = text("DELETE FROM transaction_data " + \
-        "WHERE transaction_data.transaction_id=:transaction_ID " + \
-        "AND transaction_data.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-        stmt1 = stmt1.bindparams(transaction_ID = tID, userEmail = uEmail)
-        session.execute(stmt1)
-        session.commit()
-        print("Transaction successfully deleted")
-    else: 
+    try:
+        result2 = db.transactions.find({"email" : u_email, "_id" : ObjectId(delete)})
+        
+        if result2:
+            print("Transaction exist")
+            result1 = db.transactions.find_one_and_delete({ "_id" : ObjectId(delete), "email" : u_email}, projection={"_Id" : 1, "transaction_date" : 1, "debit_amount" : 1, "credit_amount" : 1, "description_1" : 1, "description_2" : 1, "category" : 1})
+            pprint.pprint(result1)
+            print("Transaction successfully deleted")
+        else:
+            print("Transaction does not exist")
+    except:
         print("Transaction does not exist")
 
 #### END DELETE TRANSACTION FUNCTIONS ####
