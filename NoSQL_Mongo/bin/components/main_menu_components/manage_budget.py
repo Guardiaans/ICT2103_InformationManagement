@@ -1,8 +1,6 @@
-from components.dbconnection import category, budget, user, session
 import inquirer as iq
 import components.utils as ut
-import sqlalchemy as sq
-from NoSQL_Mongo.bin.components.sub_menu_components.budget_management import createBudget
+from components.sub_menu_components.budget_management import createBudget, deleteBudget
 
 def manageBudget(user_profile):
     #TODO: 
@@ -24,8 +22,7 @@ def manageBudget(user_profile):
         createBudget(user_profile)
         
     elif (menuoption == 'Delete budget'):
-        #implement delete transaction method.
-        print("delete budget method here")
+        deleteBudget(user_profile)
 
     else:
         pass
