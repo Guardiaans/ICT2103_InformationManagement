@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-from sqlalchemy import *
-from components.dbconnection import transactions, user_data
+from components.dbconnection import transactions
 from components.utils import getList, removeDup
 import inquirer as iq
 

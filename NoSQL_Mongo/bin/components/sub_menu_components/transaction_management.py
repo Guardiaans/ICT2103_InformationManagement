@@ -1,12 +1,5 @@
-import sqlalchemy
 import inquirer as iq
-from sqlalchemy.engine.interfaces import CreateEnginePlugin
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy import *
-from sqlalchemy.sql import select
-from components.dbconnection import session, category, user, transaction
+from components.dbconnection import db
 import pprint
 from bson.objectid import ObjectId
 import datetime
@@ -76,28 +69,8 @@ def insertCat(u_email):
 #### START DELETING CATEGORY FUCNTION ####
 
 def deleteCat(u_email):
-    uEmail = u_email
-    categoryDelete = input("Enter the category you wish to delete: ")
-
-    stmt1 = text("SELECT category.category_name " +
-                "FROM category " +
-                "WHERE category.category_name=:whichCategory AND " +
-                "category.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-    stmt1 = stmt1.columns(category.c.category_name)
-    stmt1 = stmt1.bindparams(whichCategory=categoryDelete, userEmail=uEmail)
-    results = session.query(category.c.category_name).from_statement(stmt1).all()
-
-    if results:
-        # do something if there is data
-        stmt = text("DELETE FROM category " + \
-        "WHERE category.category_name=:whichCategory " + \
-        "AND category.account_id=(SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-        stmt = stmt.bindparams(whichCategory = categoryDelete, userEmail = uEmail)
-        session.execute(stmt)
-        session.commit()
-        print("Category successfully deleted")
-    else:
-        print("Category does not exist")
+    pass
+    return 
 
 #### END DELETING CATEGORY FUCNTION ####
 
@@ -146,40 +119,8 @@ def insertTransaction(u_email):
         print("Transaction not added!")
 
 def checkCatAndName(u_email,u_id):
-
-    uEmail = u_email
-    insertCategory = input("Please enter category name: ")
-
-    #getting user ID
-    # stmt = text("SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail")
-    # stmt = stmt.columns(user.c.account_id)
-    # stmt = stmt.bindparams(userEmail = uEmail)
-    # results = session.query(user.c.account_id).from_statement(stmt).all()
-    # for i in results:
-    #     uID = (str(i.account_id))
-
-    # select statement to check for category name
-    stmt1 = text("SELECT category.category_name " +
-                "FROM category " +
-                "WHERE category.category_name=:whichCategory AND " +
-                "category.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-    stmt1 = stmt1.columns(category.c.category_name)
-    stmt1 = stmt1.bindparams(whichCategory=insertCategory, userEmail=uEmail)
-    results = session.query(category.c.category_name).from_statement(stmt1).all()
-
-    #if category name exist --> then do something, else --> do something
-    if results:
-        # do something if there is data, in this case, if the category exists, continue with the inserting the transaction
-        print("Category exists, proceeding to add transaction")
-        insertTransaction(insertCategory, u_id)
-    else:
-        #do something if there is no data, in this case, will help user to add the category
-        stmt3 = text("INSERT INTO category (category_name, account_id) VALUES (:categoryName, :userID)")
-        stmt3 = stmt3.bindparams(categoryName = insertCategory, userID = u_id)
-        session.execute(stmt3)
-        session.commit()
-        print("Category successfully added, proceeding to add transaction")
-        insertTransaction(insertCategory, u_id)
+    pass
+    return
 
 #### END INSERT TRANSACTION FUNCTIONS ####
 

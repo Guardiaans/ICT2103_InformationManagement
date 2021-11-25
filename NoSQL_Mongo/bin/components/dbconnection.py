@@ -54,6 +54,3 @@ except:
 #     print("{:<14} {:<18} {:<14} {:<14} {:<10} {:<10} {:<35} {} ".format(a_id, bal, bk_n, ct, cr_a, db_a, dsc1, dsc2))
 
 #### END OF PRINTING TABLE EXAMPLE ####
-
-
-

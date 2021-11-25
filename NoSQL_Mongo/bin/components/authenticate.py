@@ -1,7 +1,7 @@
 import inquirer as iq
 import components.utils as ut
 import time as t
-from components.utils import screen_clear
+from components.utils import screen_clear, getCounter
 from components.dbconnection import user_data
 from typing import Tuple
 import os
@@ -125,6 +125,7 @@ def register(usrname, pw, bk, usremail):
                        'Password': u_pw_h,
                        'Salt': salt,
                        'Email': usremail,
+                       'Balance': 0,
                        }
             # Inserting into the DB.
             user_data.insert_one(newUser)

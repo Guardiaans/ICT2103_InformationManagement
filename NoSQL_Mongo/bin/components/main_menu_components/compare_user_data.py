@@ -1,7 +1,5 @@
-from sqlalchemy.sql.operators import exists
-from components.dbconnection import category, transactions, user_data
+from components.dbconnection import transactions, user_data
 from components.utils import getList
-import sqlalchemy as sq
 import inquirer as iq
 from decimal import *
 
