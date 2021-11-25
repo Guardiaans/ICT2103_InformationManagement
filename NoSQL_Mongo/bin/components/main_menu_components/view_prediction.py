@@ -31,7 +31,7 @@ def predictData(userEmail):
 
     ''')
     #Using a function the get a list from the query table based on the document field.
-    category = getList(myquery,'category')
+    category = getList(myquery,'category',transactions)
     #removing duplicates from the list of category to iterate a table.
     catlist = removeDup(category)
     

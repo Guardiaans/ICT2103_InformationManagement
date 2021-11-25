@@ -80,9 +80,9 @@ def getCounter():
     user_data.update_one(query, newval)
     return count
 
-def getList(query,fieldname):
-    myquery = query
-    return_obj = transactions.find(myquery)
+def getList(query,fieldname,collection):
+    
+    return_obj = collection.find(query)
     listname = [item[fieldname] for item in return_obj]
     return listname
 

@@ -1,4 +1,6 @@
-from components.dbconnection import category, transaction,user,session
+from sqlalchemy.sql.operators import exists
+from components.dbconnection import category, transactions, user_data
+from components.utils import getList
 import sqlalchemy as sq
 import inquirer as iq
 from decimal import *
@@ -6,24 +8,19 @@ from decimal import *
 def compareUserData(user_profile):
     #TODO: Implement method by using data from database
     #print("comparing user data")
-    options = []
-    stmt = sq.text("SELECT user_detail.email " + \
-    "FROM user_detail ")
-    stmt = stmt.columns(user.c.email)
-    results = session.query(user.c.email).from_statement(stmt).all()
-    for items in results:
-        if items != user_profile.email:
-            options.append(items[0])
+    myquery = {'Email' : {'$exists' : 'true'}}
+    options = getList(myquery,'Email',user_data)
+    
     
     menuoption = iq.list_input(f"Select a user to compare with! ",
                               choices=options)
 
     cEmail = menuoption
 
-    result = db.transactions.aggregate([{ "$match" : {"email" : user_profile, "debit_amount" : {"$gt":0}}}, {"$group": {"_id" : "$category",  "totalAmt" : {"$sum": "$debit_amount"}}}])
+    result = transactions.aggregate([{ "$match" : {"email" : user_profile.email, "debit_amount" : {"$gt":0}}}, {"$group": {"_id" : "$category",  "totalAmt" : {"$sum": "$debit_amount"}}}])
 
     #choose the user you want to compare with
-    result2 = db.transactions.aggregate([{ "$match" : {"email" : cEmail, "debit_amount" : {"$gt":0}}}, {"$group": {"_id" : "$category",  "totalAmt" : {"$sum": "$debit_amount"}}}])
+    result2 = transactions.aggregate([{ "$match" : {"email" : cEmail, "debit_amount" : {"$gt":0}}}, {"$group": {"_id" : "$category",  "totalAmt" : {"$sum": "$debit_amount"}}}])
 
     resultDisplay = []
     for x in result:
@@ -34,7 +31,7 @@ def compareUserData(user_profile):
         resultDisplay2.append(x)
 
     getcontext().prec = 2
-    print("Total amount spent for user: ", user_profile)
+    print("Total amount spent for user: ", user_profile.email)
     print("{:<30}{:<15}".format("Category","Total Amount spent"))
     print(80*"_")
     for i in resultDisplay:
