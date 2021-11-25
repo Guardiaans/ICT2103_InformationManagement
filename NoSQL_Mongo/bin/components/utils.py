@@ -2,7 +2,7 @@ import os
 import time as t
 from time import sleep
 from sqlalchemy.sql.sqltypes import NullType
-from components.dbconnection import user_data
+from components.dbconnection import user_data, transactions
 
 # class User(Base):
 #     __tablename__ = 'user_detail'
@@ -79,3 +79,12 @@ def getCounter():
     newval = {'$set': {'count': count}}
     user_data.update_one(query, newval)
     return count
+
+def getList(query,fieldname):
+    myquery = query
+    return_obj = transactions.find(myquery)
+    listname = [item[fieldname] for item in return_obj]
+    return listname
+
+def removeDup(x):
+    return list(dict.fromkeys(x))
