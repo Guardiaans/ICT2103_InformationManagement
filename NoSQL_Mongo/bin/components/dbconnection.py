@@ -19,6 +19,7 @@ try:
     time.sleep(1)
 except:
     print("Error connecting to DB")
+    
 
 #### START OF PRINTING TABLE EXAMPLE ####
 
