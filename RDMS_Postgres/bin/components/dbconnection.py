@@ -7,6 +7,8 @@ from sqlalchemy import *
 from sqlalchemy.sql import select
 from sqlalchemy.sql.elements import Null
 from sqlalchemy.sql.sqltypes import NullType
+from datetime import date
+import components.colors as cl
 import time
 import concurrent.futures
 
@@ -14,7 +16,7 @@ start = time.perf_counter()
 
 # Using SQLAlchemy reflection example
 try:
-    print(f"\t\t{'||' : <10} {'Establishing connection to Database...' : ^10} {'||' : >10}")
+    print(f"\t\t{'||' : <10} {f'Establishing connection to {cl.bcolors.WARNING}{cl.bcolors.BOLD}RDMS{cl.bcolors.ENDC} Database...' : ^10} {'||' : >10}")
     engine = create_engine(
         'postgresql+psycopg2://bfcyvcjpoysvfm:2d577da4f1484cea46199f86a766e69fc14c6323e655828e032e2e1cdc8d5ed6@ec2-34-200-161-87.compute-1.amazonaws.com:5432/dcr1h5psuc7lvu')
 
