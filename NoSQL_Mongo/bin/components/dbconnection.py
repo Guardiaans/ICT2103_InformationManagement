@@ -3,10 +3,11 @@ from inquirer.render.console.base import BaseConsoleRender
 import pymongo
 from pymongo import MongoClient
 import datetime as dt
+import components.colors as cl
 
 ## MONGO CLIENT DATA CONNECTION ##
 try:
-    print(f"\t\t{'||' : <10} {'Establishing connection to Database...' : ^10} {'||' : >10}")
+    print(f"\t\t{'||' : <10} {f'Establishing connection to {cl.bcolors.OKGREEN}{cl.bcolors.BOLD}noSQL{cl.bcolors.ENDC} Database...' : ^10} {'||' : >10}")
     cluster = MongoClient("mongodb+srv://shengyu98:PiJF4JXI@cluster0.zwj7f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = cluster["expenseTracker"]
     transactions = db["transactions"]
