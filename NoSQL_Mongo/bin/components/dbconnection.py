@@ -29,3 +29,4 @@ except:
 #print(session.query(exists(user.c.name).where(user.c.name == 'notinDB')).scalar())
 #register("Spongebob", 1234, "krustyKrab", "spongebob@gmail.com")
 
+# transactions.delete_many({})
