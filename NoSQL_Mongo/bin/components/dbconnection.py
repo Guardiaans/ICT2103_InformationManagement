@@ -2,12 +2,7 @@ import time
 from inquirer.render.console.base import BaseConsoleRender
 import pymongo
 from pymongo import MongoClient
-from typing import Tuple
-import os
-import hashlib
-import hmac
 import datetime as dt
-from pprint import pprint
 
 ## MONGO CLIENT DATA CONNECTION ##
 try:
@@ -25,52 +20,38 @@ try:
 except:
     print("Error connecting to DB")
 
+
+### LIST FUNCTION FOUND IN UTILS
+def getList(query,fieldname):
+    myquery = query
+    return_obj = transactions.find(myquery)
+    listname = [item[fieldname] for item in return_obj]
+    return listname
+
+### TABLE QUERY
 mydate = dt.datetime(2021,10,10)
-mydate2 = dt.datetime(2021,10,1)
-
-_id, account_id, balance, bank_name, category, category_created_by, credit_amount, date_registered, debit_amount,description_1,description_2, email, name, password, transaction_date = [],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
-
+mydate2 = dt.datetime(2021,5,1)
 myquery = {'email' : 'kgc@gmail.com', 'transaction_date' : {'$lt':mydate, '$gt':mydate2}}
 
-return_obj = transactions.find(myquery)
-acc_id = [item['account_id'] for item in return_obj]
-return_obj = transactions.find(myquery)
-bal = [item['balance'] for item in return_obj]
-return_obj = transactions.find(myquery)
-bk_name = [item['bank_name'] for item in return_obj]
-return_obj = transactions.find(myquery)
-cat = [item['category'] for item in return_obj]
-return_obj = transactions.find(myquery)
-cr_amt = [item['credit_amount'] for item in return_obj]
-return_obj = transactions.find(myquery)
-db_amt = [item['debit_amount'] for item in return_obj]
-return_obj = transactions.find(myquery)
-dsc1 = [item['description_1'] for item in return_obj]
-return_obj = transactions.find(myquery)
-dsc2 = [item['description_2'] for item in return_obj]
+### GENERATE ALL THE LIST FOR THE TABLE COLUMN
+acc_id = getList(myquery,'account_id')
+balance = getList(myquery,'balance')
+bank_name = getList(myquery,'bank_name')
+category = getList(myquery,'category')
+credit_amount = getList(myquery,'credit_amount')
+debit_amount = getList(myquery,'debit_amount')
+description_1 = getList(myquery,'description_1')
+description_2 = getList(myquery,'description_2')
 
-#print(acc_id)
-
-# for dicts in return_obj:
-#     for key,val in dicts.items():
-#         print(key, val)
-        # _id.append(val)
-        # account_id.append(val)
-        # balance.append(val)
-        # bank_name.append(val)
-        # category.append(val)
-        # category_created_by.append(val)
-        # credit_amount.append(val)
-        # date_registered.append(val)
-        # debit_amount.append(val)
-        # description_1.append(val)
-        # description_2.append(val)
-        # email.append(val)
-        # name.append(val)
-        # password.append(val)
-        # transaction_date.append(val)
+### PRINTING TABLE
+z = zip(acc_id, balance,bank_name,category,credit_amount,debit_amount,description_1,description_2)
+alist = list(z)
+print("{:<15}{:<19}{:<15}{:<15}{:<11}{:<11}{}".format('ACCOUNT_ID', 'ACCOUNT_BALANCE', 'BANK_NAME', 'CATEGORY', 'CREDIT', 'DEBIT', 'DESCRIPTION'))
+print("---------------------------------------------------------------------------------------------------------------------------------------------")
+for a_id , bal, bk_n, ct, cr_a, db_a, dsc1, dsc2 in alist:
+    print("{:<14} {:<18} {:<14} {:<14} {:<10} {:<10} {:<35} {} ".format(a_id, bal, bk_n, ct, cr_a, db_a, dsc1, dsc2))
 
 
 
-# total_debit = sum(debit_amount)
-# print(total_debit)
+
+
