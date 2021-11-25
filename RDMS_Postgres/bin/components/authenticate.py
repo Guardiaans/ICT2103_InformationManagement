@@ -11,7 +11,8 @@ from components.dbconnection import user
 #launch authentication UI
 def launchAuthenUI():
     screen_clear()
-    print("""
+    print(f"""{ut.bcolors.OKCYAN}{ut.bcolors.BOLD}
+                                    ++ POSTGRES EDITION ++ {ut.bcolors.ENDC}
             _________________________________________________________________________
             |                                                                       |
             |                  Welcome to OKFINANCE Management!                     |

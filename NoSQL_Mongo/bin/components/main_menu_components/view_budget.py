@@ -1,4 +1,5 @@
 from components.dbconnection import budget
+import inquirer as iq
 
 # VIEW BUDGET FUNCTION
 def viewBudget(user_profile):
@@ -12,6 +13,11 @@ def viewBudget(user_profile):
         for i in results:
             print("${:<19}${:<19}{:<10}{:<10}{:<100}".format(i["budget_amount"], i["actual_spent"], i["month"], i["year"],
                                                              i["description"]))
+
+        menuoption = iq.list_input(f"Select an option",
+                                choices=['Back',
+                                ])
+        return menuoption
 
     except:
         print("Error has occurred!")

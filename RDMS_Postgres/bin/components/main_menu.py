@@ -18,7 +18,7 @@ def mainMenu(email):
     user_profile = getUserProfile(email)
 
     #Menu options for user
-    menuoption = iq.list_input(f"Welcome to the Main Menu <{user_profile.name}>! What would you like to do today?",
+    menuoption = iq.list_input(f"Welcome to the Main Menu <{ut.bcolors.WARNING}{user_profile.name}{ut.bcolors.ENDC}>! What would you like to do today?",
                               choices=['View Profile', 'Upload Data', 
                               'View Transaction Summary',
                               'View Budget',

@@ -39,11 +39,13 @@ def is_correct_password(salt: bytes, pw_hash: bytes, password: str) -> bool:
 
 def launchAuthenUI():
     screen_clear()
-    print("""
-            _________________________________________________________________________
+    print(f"""{ut.bcolors.OKGREEN}{ut.bcolors.BOLD}
+                                     ++ MONGO EDITION ++ {ut.bcolors.ENDC}
+             _______________________________________________________________________
             |                                                                       |
             |                  Welcome to OKFINANCE Management!                     |
             |_______________________________________________________________________|
+                                       
     """)
     # only given two choice
     # inquirer import function

@@ -14,27 +14,15 @@ def manageTransaction(user_profile):
     menuoption = iq.list_input("Managing transactions!",
                               choices=['Create or Insert transaction', 
                               'Delete transaction',
-                              'Create or Insert Category',
-                              'Delete Category',
                               'Back',
                               ])
 
     if (menuoption == 'Create or Insert transaction'):
         #adding transaction
-        tm.checkCatAndName(usr_email,usr_id)
-        
+        tm.insertTransaction(usr_email)
     elif (menuoption == 'Delete transaction'):
         #adding transaction
         tm.deleteTransaction(usr_email)
-
-    elif (menuoption == 'Create or Insert Category'):
-        #inserting category
-        tm.insertCat(usr_email)
-
-    elif (menuoption == 'Delete Category'):
-        #deleting category
-        tm.deleteCat(usr_email)
-
     else:
         
         print("returning back to main menu")

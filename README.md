@@ -1,14 +1,12 @@
-# ICT2103_Database
-This Repo is for ICT2103 Module Information Management
+# ICT2103 Infomation Management Project
 
-## Dev setup
+OKFINANCE terminal application was developed to help us 
+visualise and manage our finances using database systems.
+
+## Get Started
 ```sh
-# Get pipenv installed
-pip install pipenv
+# To get started, run in your python virtual environment : 
+pip install -r requirements.txt
 
-# install all deps
-pipenv install
-
-# start shell if not already active
-pipenv shell
 ```
+And you are ready to run the application on your terminal! 

@@ -9,6 +9,7 @@ class dateInput():
     def __init__(self,yr , mnth) -> None:
         self.year = yr
         self.month = mnth
+
 def getDateInput():
     year = iq.text(message="Enter a year (e.g. 2021)")
     month = iq.text(message="Enter a month (e.g. 10)")
@@ -16,63 +17,6 @@ def getDateInput():
     return d
 
 #### INSERTING CATEGORY FUCNTION ####
-
-def insertCat(u_email):
-    
-    insertName = ""
-    insertAccID = ""
-
-    result = db.transactions.find({"email": u_email})
-
-    transactionDisplay = []
-    for x in result:    
-        transactionDisplay.append(x)
-
-    for i in transactionDisplay:
-        insertName = (str(i["name"]))
-        insertAccID = (str(i["account_id"]))
-
-    year = input("Enter a year (e.g. 2021): ")
-    month = input("Enter a month (e.g. 10): ")
-    day = input("Enter the day (e.g. 24): ")
-    insertDebit = input("Enter debit amount: ")
-    insertCredit = input("Enter credit amount: ")
-    insertDesc1 = input("Enter description if any: ")
-    insertDesc2 = input("Enter description if any: ")
-    insertCategory = input("Enter the category: ")
-
-    try:
-        db.transactions.insert_one(
-            {
-            "transaction_date": datetime.datetime(int(year), int(month), int(day), 0, 0),
-            "debit_amount" : int(insertDebit),
-            "credit_amount" : int(insertCredit),
-            "description_1" : insertDesc1,
-            "description_2" : insertDesc2,
-            "category" : insertCategory,
-            "name" : insertName,
-            "email" : u_email,
-            "account_id" : insertAccID
-            }
-        ).inserted_id
-        print("Transaction successfully added!")
-    except:
-        print("Transaction not added!")
-
-    menuoption = iq.list_input(f"Select an option",
-                              choices=['Back',
-                              ])
-    return menuoption
-
-#### END INSERTING CATEGORY FUCNTION ####
-
-#### START DELETING CATEGORY FUCNTION ####
-
-def deleteCat(u_email):
-    pass
-    return 
-
-#### END DELETING CATEGORY FUCNTION ####
 
 #### START INSERT TRANSACTION FUNCTIONS ####
 
@@ -117,10 +61,6 @@ def insertTransaction(u_email):
         print("Transaction successfully added!")
     except:
         print("Transaction not added!")
-
-def checkCatAndName(u_email,u_id):
-    pass
-    return
 
 #### END INSERT TRANSACTION FUNCTIONS ####
 
