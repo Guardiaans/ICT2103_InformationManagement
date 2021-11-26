@@ -19,6 +19,8 @@ def viewBudget(user_profile):
                                                             "actual spent", "category"))
     print("_________________________________________________________________________________________________________________________________________")
     for i in results:
+        if i.actual_spent == 'null':
+            i.actual_spent = 0
         print("{:<5}{:<13}{:<12}{:<12}{:<40}{:<40}{:<5}".format(str(i.budget_id), str(i.budget_amount),
                                                                 str(i.month), str(i.year),
                                                                 str(i.description), str(i.actual_spent),
