@@ -15,7 +15,6 @@ def manageTransaction(user_profile):
                               choices=['Create or Insert transaction', 
                               'Delete transaction',
                               'Create or Insert Category',
-                              'Delete Category',
                               'Back',
                               ])
 
@@ -30,10 +29,6 @@ def manageTransaction(user_profile):
     elif (menuoption == 'Create or Insert Category'):
         #inserting category
         tm.insertCat(usr_email)
-
-    elif (menuoption == 'Delete Category'):
-        #deleting category
-        tm.deleteCat(usr_email)
 
     else:
         

@@ -51,34 +51,6 @@ def insertCat(u_email):
 
 #### END INSERTING CATEGORY FUCNTION ####
 
-#### START DELETING CATEGORY FUCNTION ####
-
-def deleteCat(u_email):
-    uEmail = u_email
-    categoryDelete = input("Enter the category you wish to delete: ")
-
-    stmt1 = text("SELECT category.category_name " +
-                "FROM category " +
-                "WHERE category.category_name=:whichCategory AND " +
-                "category.account_id = (SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-    stmt1 = stmt1.columns(category.c.category_name)
-    stmt1 = stmt1.bindparams(whichCategory=categoryDelete, userEmail=uEmail)
-    results = session.query(category.c.category_name).from_statement(stmt1).all()
-
-    if results:
-        # do something if there is data
-        stmt = text("DELETE FROM category " + \
-        "WHERE category.category_name=:whichCategory " + \
-        "AND category.account_id=(SELECT user_detail.account_id FROM user_detail WHERE user_detail.email=:userEmail)")
-        stmt = stmt.bindparams(whichCategory = categoryDelete, userEmail = uEmail)
-        session.execute(stmt)
-        session.commit()
-        print("Category successfully deleted")
-    else:
-        print("Category does not exist")
-
-#### END DELETING CATEGORY FUCNTION ####
-
 #### START INSERT TRANSACTION FUNCTIONS ####
 
 def insertTransaction(catName, user_Id):
