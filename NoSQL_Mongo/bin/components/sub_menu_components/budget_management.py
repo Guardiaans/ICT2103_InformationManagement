@@ -13,12 +13,10 @@ def createBudget(user_profile):
         catName = input("Enter category name: ")
         desc = input("Enter description: ")
         actualSpent = int(input("Enter actual spent: "))
-        bankName = user_profile.bank
         email = user_profile.email
-        date = user_profile.registered
         mydict = {"budget_amount":budgetAmount,"month":month,"year":year,"category_name":catName,"description":desc,
-                  "actual_spent":actualSpent,"date_registered":date,"name":name,
-                  "bank_name":bankName,"email":email,"category_created_by":name,"account_id":id}
+                  "actual_spent":actualSpent,"name":name,
+                  "email":email,"category_created_by":name,"account_id":id}
         budget.insert_one(mydict)
         print("Budget successfully inserted")
     except:
